@@ -1,5 +1,7 @@
 import 'package:dalel_app/app/core/app_strings.dart';
 import 'package:dalel_app/app/core/app_text_styles.dart';
+import 'package:dalel_app/app/core/database/cache/cache_helper.dart';
+import 'package:dalel_app/app/core/service/service_locator.dart';
 import 'package:dalel_app/app/modules/onBoarding/model/on_boarding_model.dart';
 import 'package:dalel_app/app/modules/onBoarding/views/widgets/custom_btn.dart';
 import 'package:dalel_app/app/modules/onBoarding/views/widgets/on_boarding_widget_body.dart';
@@ -36,6 +38,10 @@ class OnBoardingView extends GetView<OnBoardingController> {
                             children: [
                               CustomBtn(
                                 onPressed: () {
+                                  getIt<CacheHelper>().saveData(
+                                    key: "isOnBoardingVisited",
+                                    value: true,
+                                  );
                                   Get.offAllNamed(Routes.SIGNUP);
                                 },
                                 text: AppStrings.createAccount,

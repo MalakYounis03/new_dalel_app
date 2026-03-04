@@ -2,20 +2,20 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../controllers/auth_controller.dart';
+import '../controllers/signin_controller.dart';
 
-class AuthView extends GetView<AuthController> {
-  const AuthView({super.key});
+class SigninView extends GetView<SigninController> {
+  const SigninView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AuthView'),
+        title: const Text('SigninView'),
         centerTitle: true,
       ),
       body: const Center(
         child: Text(
-          'AuthView is working',
+          'SigninView is working',
           style: TextStyle(fontSize: 20),
         ),
       ),

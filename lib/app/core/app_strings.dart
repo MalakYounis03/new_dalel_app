@@ -3,7 +3,7 @@ abstract class AppStrings {
 
   static const String appName = "Dalel",
   //!On Boarding Strings
-  skip = "Skip", next = "Next", createAccount = "Create Account", loginNow = "Login Now",
+  skip = "Skip", next = "Next", createAccount = "Create Account", loginNow = "Login Now", onBoardingTitle1 = "Explore The history with \n Dalel in a smart way", onBoardingDescription1 = "Using our app’s history libraries \n you can find many historical periods ", onBoardingTitle2 = "Discover the historical characters with \n Dalel", onBoardingDescription2 = "Using our app’s history libraries \n you can find many historical characters ", onBoardingTitle3 = "Find the best history books with \n Dalel", onBoardingDescription3 = "Using our app’s history libraries \n you can find many history books ",
   //!Auth Strings
   welcome = "Welcome!", welcomeBack = "Welcome Back!", fristName = "First Name", lastName = "Last Name", emailAddress = "Email Address", password = "Password", iHaveAgreeToOur = "I have agree to our ", termsAndCondition = "Terms and Condition", signUp = "Sign Up", signIn = "Sign In", alreadyHaveAnAccount = "Already have an account ? ", dontHaveAnAccount = "Don’t have an account ? ", forgotPassword = "Forgot Password ?",
   //!Home Strings

@@ -3,7 +3,7 @@ import 'package:dalel_app/app/core/app_text_styles.dart';
 import 'package:dalel_app/app/core/database/cache/cache_helper.dart';
 import 'package:dalel_app/app/core/service/service_locator.dart';
 import 'package:dalel_app/app/modules/onBoarding/model/on_boarding_model.dart';
-import 'package:dalel_app/app/modules/onBoarding/views/widgets/custom_btn.dart';
+import 'package:dalel_app/app/core/widgets/custom_btn.dart';
 import 'package:dalel_app/app/modules/onBoarding/views/widgets/on_boarding_widget_body.dart';
 import 'package:dalel_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';

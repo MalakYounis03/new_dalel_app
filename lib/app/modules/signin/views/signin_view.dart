@@ -1,3 +1,11 @@
+import 'package:dalel_app/app/core/app_assets.dart';
+import 'package:dalel_app/app/core/app_colors.dart';
+import 'package:dalel_app/app/core/app_strings.dart';
+import 'package:dalel_app/app/core/app_text_styles.dart';
+import 'package:dalel_app/app/core/widgets/auth_toggle_text.dart';
+import 'package:dalel_app/app/core/widgets/text_form_filed.dart';
+import 'package:dalel_app/app/core/widgets/custom_btn.dart';
+import 'package:dalel_app/app/routes/app_pages.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,15 +17,78 @@ class SigninView extends GetView<SigninController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SigninView'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text(
-          'SigninView is working',
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Stack(
+                    children: [
+                      Container(
+                        color: AppColors.primaryColor,
+
+                        width: double.infinity,
+                        height: 300,
+                      ),
+                      Positioned(
+                        top: 120,
+                        left: 150,
+                        child: Text(
+                          "Dalel",
+                          style: AppTextStyles.saira700style32,
+                        ),
+                      ),
+                      Positioned(
+                        top: 188,
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Image.asset(Assets.assetsImagesAhramat),
+                            Image.asset(Assets.assetsImagesMasgid),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    AppStrings.welcomeBack,
+                    style: AppTextStyles.poppins500style24,
+                  ),
+                  SizedBox(height: 40),
+                  CustomTextFormFiled(label: AppStrings.emailAddress),
+                  SizedBox(height: 16),
+                  CustomTextFormFiled(label: AppStrings.password),
+                  SizedBox(height: 8),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        AppStrings.forgotPassword,
+                        style: AppTextStyles.poppins400style12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          CustomBtn(onPressed: () {}, text: AppStrings.signIn),
+          SizedBox(height: 16),
+          AuthToggleText(
+            questionText: AppStrings.dontHaveAnAccount,
+            actionText: AppStrings.signUp,
+            onTap: () {
+              Get.offNamed(Routes.SIGNUP);
+            },
+          ),
+          SizedBox(height: 100),
+        ],
       ),
     );
   }

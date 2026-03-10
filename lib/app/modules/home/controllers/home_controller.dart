@@ -1,23 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
-
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  FirebaseAuth auth = FirebaseAuth.instance;
+  Future<void> logout() async {
+    try {
+      await auth.signOut();
+      print("Success Logout");
+      Get.offAllNamed("/signin");
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar("Error", "Failed to logout");
+      print("FirebaseAuthException : $e");
+    } catch (e) {
+      Get.snackbar("Error", "An error occurred");
+      print("Exception : $e");
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

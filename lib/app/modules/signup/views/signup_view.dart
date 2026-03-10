@@ -16,71 +16,134 @@ class SignupView extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 152),
-                  Text(
-                    AppStrings.welcome,
-                    style: AppTextStyles.poppins600style28.copyWith(
-                      color: AppColors.black,
-                      fontWeight: FontWeight.w600,
+      body: Form(
+        key: controller.formKey,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 152),
+                    Text(
+                      AppStrings.welcome,
+                      style: AppTextStyles.poppins600style28.copyWith(
+                        color: AppColors.black,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 60),
-                  CustomTextFormFiled(label: AppStrings.fristName),
-                  SizedBox(height: 16),
-                  CustomTextFormFiled(label: AppStrings.lastName),
-                  SizedBox(height: 16),
-                  CustomTextFormFiled(label: AppStrings.emailAddress),
-                  SizedBox(height: 16),
-                  CustomTextFormFiled(label: AppStrings.password),
+                    SizedBox(height: 60),
+                    CustomTextFormFiled(
+                      label: AppStrings.fristName,
+                      controller: controller.firstName,
+                      validator: (value) {
+                        if (value!.isEmpty) return "first name is required";
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    CustomTextFormFiled(
+                      label: AppStrings.lastName,
+                      controller: controller.lastName,
+                      validator: (value) {
+                        if (value!.isEmpty) return "last name is required";
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    CustomTextFormFiled(
+                      label: AppStrings.emailAddress,
+                      controller: controller.email,
+                      validator: (value) {
+                        if (value!.isEmpty) return "email is required";
+                        if (!GetUtils.isEmail(value)) {
+                          return "invalid email";
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 16),
+                    CustomTextFormFiled(
+                      label: AppStrings.password,
+                      controller: controller.password,
+                      isPassword: true,
+                      validator: (value) {
+                        if (value!.isEmpty) return "password is required";
+                        if (value.length < 6) {
+                          return "password must be at least 6 characters";
+                        }
+                        return null;
+                      },
+                    ),
 
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Checkbox(value: false, onChanged: (value) {}),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "I have agree to our ",
-                                style: AppTextStyles.poppins400style12.copyWith(
-                                  color: AppColors.darkGrey,
-                                ),
-                              ),
-                              TextSpan(
-                                text: "Terms and Condition",
-                                style: AppTextStyles.poppins400style12.copyWith(
-                                  color: AppColors.primaryColor,
-                                  decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ],
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25),
+                      child: Row(
+                        children: [
+                          Obx(
+                            () => Checkbox(
+                              value: controller.isChecked.value,
+                              onChanged: (value) =>
+                                  controller.isChecked.value = value!,
+                              activeColor: AppColors.primaryColor,
+                            ),
                           ),
-                        ),
-                      ],
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "I have agree to our ",
+                                  style: AppTextStyles.poppins400style12
+                                      .copyWith(color: AppColors.darkGrey),
+                                ),
+                                TextSpan(
+                                  text: "Terms and Condition",
+                                  style: AppTextStyles.poppins400style12
+                                      .copyWith(
+                                        color: AppColors.primaryColor,
+                                        decoration: TextDecoration.underline,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+
+                    SizedBox(height: 70),
+                    Obx(() {
+                      if (controller.isLoading.value) {
+                        return CircularProgressIndicator();
+                      } else {
+                        return CustomBtn(
+                          onPressed: () {
+                            controller.register(
+                              email: controller.email.text,
+                              password: controller.password.text,
+                              firstName: controller.firstName.text,
+                              lastName: controller.lastName.text,
+                            );
+                          },
+                          text: AppStrings.signUp,
+                        );
+                      }
+                    }),
+                    SizedBox(height: 16),
+                    AuthToggleText(
+                      questionText: AppStrings.alreadyHaveAnAccount,
+                      actionText: AppStrings.signIn,
+                      onTap: () {
+                        Get.offNamed(Routes.SIGNIN);
+                      },
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                ),
               ),
             ),
-          ),
-          CustomBtn(onPressed: () {}, text: AppStrings.signUp),
-          SizedBox(height: 16),
-          AuthToggleText(
-            questionText: AppStrings.alreadyHaveAnAccount,
-            actionText: AppStrings.signIn,
-            onTap: () {
-              Get.offNamed(Routes.SIGNIN);
-            },
-          ),
-          SizedBox(height: 100),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -1,23 +1,42 @@
+import 'package:dalel_app/app/routes/app_pages.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class SignupController extends GetxController {
-  //TODO: Implement SignupController
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  RxBool isLoading = false.obs;
+  final formKey = GlobalKey<FormState>();
+  Future<void> register({
+    required String email,
+    required String password,
+    required String firstName,
+    required String lastName,
+  }) async {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+    try {
+      isLoading.value = true;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+      await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      Get.snackbar("Success", "Account created successfully");
+      Get.offNamed(Routes.HOME);
+    } on FirebaseAuthException catch (e) {
+      isLoading.value = false;
+      Get.snackbar("FirebaseAuthException", "$e");
+    } catch (e) {
+      isLoading.value = false;
+      Get.snackbar("Error", "$e");
+    }
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
+  final isChecked = false.obs;
 }

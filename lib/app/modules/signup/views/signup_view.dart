@@ -117,13 +117,18 @@ class SignupView extends GetView<SignupController> {
                         return CircularProgressIndicator();
                       } else {
                         return CustomBtn(
+                          backgroundColor: controller.isChecked.value
+                              ? AppColors.primaryColor
+                              : AppColors.lightGrey,
                           onPressed: () {
-                            controller.register(
-                              email: controller.email.text,
-                              password: controller.password.text,
-                              firstName: controller.firstName.text,
-                              lastName: controller.lastName.text,
-                            );
+                            controller.isChecked.value == false
+                                ? null
+                                : controller.register(
+                                    email: controller.email.text,
+                                    password: controller.password.text,
+                                    firstName: controller.firstName.text,
+                                    lastName: controller.lastName.text,
+                                  );
                           },
                           text: AppStrings.signUp,
                         );

@@ -1,3 +1,4 @@
+import 'package:dalel_app/app/modules/signin/views/forget_password.dart';
 import 'package:get/get.dart';
 
 import '../modules/bazar/bindings/bazar_binding.dart';
@@ -71,6 +72,11 @@ class AppPages {
     GetPage(
       name: _Paths.SIGNIN,
       page: () => const SigninView(),
+      binding: SigninBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGET_PASSWORD,
+      page: () => const ForgetPassword(),
       binding: SigninBinding(),
     ),
   ];

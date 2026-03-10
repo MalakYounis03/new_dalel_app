@@ -6,11 +6,15 @@ import 'package:get/get.dart';
 class SigninController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController forgetPasswordEmail = TextEditingController();
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   RxBool isLoading = false.obs;
-  final formKey = GlobalKey<FormState>();
+  final signinFormKey = GlobalKey<FormState>();
+  final forgetPassFormKey = GlobalKey<FormState>();
+
   Future<void> signin({required String email, required String password}) async {
-    if (!formKey.currentState!.validate()) {
+    if (!signinFormKey.currentState!.validate()) {
       return;
     }
     try {
@@ -28,6 +32,8 @@ class SigninController extends GetxController {
   }
 
   Future<void> resetPassword({required String email}) async {
+    if (!forgetPassFormKey.currentState!.validate()) return; // ✅
+
     try {
       isLoading.value = true;
       await auth.sendPasswordResetEmail(email: email);

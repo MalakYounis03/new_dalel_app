@@ -18,7 +18,7 @@ class SigninView extends GetView<SigninController> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Form(
-        key: controller.formKey,
+        key: controller.signinFormKey,
         child: Column(
           children: [
             Expanded(
@@ -91,9 +91,7 @@ class SigninView extends GetView<SigninController> {
                       child: Align(
                         alignment: Alignment.centerRight,
                         child: GestureDetector(
-                          onTap: () => controller.resetPassword(
-                            email: controller.email.text,
-                          ),
+                          onTap: () => Get.toNamed(Routes.FORGET_PASSWORD),
                           child: Text(
                             AppStrings.forgotPassword,
                             style: AppTextStyles.poppins400style12,

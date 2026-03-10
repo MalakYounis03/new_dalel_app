@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dalel_app/app/routes/app_pages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,11 @@ class SignupController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
+  final CollectionReference users = FirebaseFirestore.instance.collection(
+    'users',
+  );
+  final isChecked = false.obs;
+
   RxBool isLoading = false.obs;
   final formKey = GlobalKey<FormState>();
   Future<void> register({
@@ -17,7 +23,9 @@ class SignupController extends GetxController {
     required String firstName,
     required String lastName,
   }) async {
-    if (!formKey.currentState!.validate()) {
+    if (!formKey.currentState!.validate()) return;
+    if (!isChecked.value) {
+      Get.snackbar("Error", "يجب الموافقة على الشروط");
       return;
     }
     try {
@@ -26,6 +34,11 @@ class SignupController extends GetxController {
       await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
+      );
+      await addUserProfile(
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
       );
       Get.snackbar("Success", "Account created successfully");
       Get.offNamed(Routes.HOME);
@@ -38,5 +51,16 @@ class SignupController extends GetxController {
     }
   }
 
-  final isChecked = false.obs;
+  Future<void> addUserProfile({
+    required String email,
+    required String firstName,
+    required String lastName,
+  }) async {
+    String uid = auth.currentUser!.uid;
+    await users.doc(uid).set({
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+    });
+  }
 }

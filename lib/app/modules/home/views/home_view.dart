@@ -1,3 +1,5 @@
+import 'package:dalel_app/app/core/app_colors.dart';
+import 'package:dalel_app/app/modules/home/views/widgets/custom_home_view_app_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -9,13 +11,9 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            await controller.logout();
-          },
-          child: Text("Sign Out"),
-        ),
+      backgroundColor: AppColors.offWhite,
+      body: CustomScrollView(
+        slivers: [SliverToBoxAdapter(child: CustomHomeViewAppBar())],
       ),
     );
   }

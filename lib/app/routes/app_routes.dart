@@ -14,6 +14,7 @@ abstract class Routes {
   static const SIGNUP = _Paths.SIGNUP;
   static const SIGNIN = _Paths.SIGNIN;
   static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
+  static const HomeNavBarWidget = _Paths.HomeNavBarWidget;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const SIGNUP = '/signup';
   static const SIGNIN = '/signin';
   static const FORGET_PASSWORD = '/forget-password';
+  static const HomeNavBarWidget = '/home-nav-bar-widget';
 }

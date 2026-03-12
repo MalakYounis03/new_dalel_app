@@ -1,3 +1,4 @@
+import 'package:dalel_app/app/core/widgets/home_nav_bar_widget.dart';
 import 'package:dalel_app/app/modules/signin/views/forget_password.dart';
 import 'package:get/get.dart';
 
@@ -78,6 +79,10 @@ class AppPages {
       name: _Paths.FORGET_PASSWORD,
       page: () => const ForgetPassword(),
       binding: SigninBinding(),
+    ),
+    GetPage(
+      name: _Paths.HomeNavBarWidget,
+      page: () => const HomeNavBarWidget(),
     ),
   ];
 }

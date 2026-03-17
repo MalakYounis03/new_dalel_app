@@ -1,4 +1,5 @@
 import 'package:dalel_app/app/core/widgets/home_nav_bar_widget.dart';
+import 'package:dalel_app/app/modules/home/views/period_details.dart';
 import 'package:dalel_app/app/modules/signin/views/forget_password.dart';
 import 'package:get/get.dart';
 
@@ -84,5 +85,6 @@ class AppPages {
       name: _Paths.HomeNavBarWidget,
       page: () => const HomeNavBarWidget(),
     ),
+    GetPage(name: _Paths.PeriodDetails, page: () => PeriodDetails()),
   ];
 }

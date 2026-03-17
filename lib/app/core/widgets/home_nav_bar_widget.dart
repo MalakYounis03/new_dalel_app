@@ -1,15 +1,48 @@
 import 'package:dalel_app/app/core/app_colors.dart';
+import 'package:dalel_app/app/modules/cart/controllers/cart_controller.dart';
 import 'package:dalel_app/app/modules/cart/views/cart_view.dart';
+import 'package:dalel_app/app/modules/home/controllers/home_controller.dart';
 import 'package:dalel_app/app/modules/home/views/home_view.dart';
+import 'package:dalel_app/app/modules/profile/controllers/profile_controller.dart';
 import 'package:dalel_app/app/modules/profile/views/profile_view.dart';
+import 'package:dalel_app/app/modules/search_feature/controllers/search_feature_controller.dart';
 import 'package:dalel_app/app/modules/search_feature/views/search_feature_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 
 PersistentTabController _controller = PersistentTabController();
 List<Widget> _buildScreens() {
-  return [HomeView(), CartView(), SearchFeatureView(), ProfileView()];
+  return [
+    Builder(
+      builder: (_) {
+        Get.put<HomeController>(HomeController(), permanent: true);
+        return HomeView();
+      },
+    ),
+    Builder(
+      builder: (_) {
+        Get.put<CartController>(CartController(), permanent: true);
+        return CartView();
+      },
+    ),
+    Builder(
+      builder: (_) {
+        Get.put<SearchFeatureController>(
+          SearchFeatureController(),
+          permanent: true,
+        );
+        return SearchFeatureView();
+      },
+    ),
+    Builder(
+      builder: (_) {
+        Get.put<ProfileController>(ProfileController(), permanent: true);
+        return ProfileView();
+      },
+    ),
+  ];
 }
 
 List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -76,26 +109,7 @@ class HomeNavBarWidget extends StatelessWidget {
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(),
-      // handleAndroidBackButtonPress: true,
-      // resizeToAvoidBottomInset: true,
-      // stateManagement: true,
-      // hideNavigationBarWhenKeyboardAppears: true,
       backgroundColor: AppColors.primaryColor,
-      // isVisible: true,
-
-      // animationSettings: const NavBarAnimationSettings(
-      //   navBarItemAnimation: ItemAnimationSettings(
-      //     duration: Duration(milliseconds: 400),
-      //     curve: Curves.ease,
-      //   ),
-      //   screenTransitionAnimation: ScreenTransitionAnimationSettings(
-      //     animateTabTransition: true,
-      //     duration: Duration(milliseconds: 200),
-      //     screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
-      //   ),
-      // ),
-      // confineToSafeArea: true,
-      // navBarHeight: kBottomNavigationBarHeight,
       navBarStyle: NavBarStyle.style12,
 
       decoration: NavBarDecoration(

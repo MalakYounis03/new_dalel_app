@@ -5,11 +5,20 @@ import 'package:flutter/material.dart';
 class HistoricalCharactersItem extends StatelessWidget {
   const HistoricalCharactersItem({
     super.key,
-    required this.text,
-    required this.imagePath,
+    required this.name,
+    required this.photoUrl,
   });
-  final String text;
-  final String imagePath;
+  final String photoUrl;
+  final String name;
+
+  String get _firstName {
+    final trimmed = name.trim();
+    if (trimmed.isEmpty) {
+      return '';
+    }
+    return trimmed.split(RegExp(r'\s+')).first;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,16 +38,37 @@ class HistoricalCharactersItem extends StatelessWidget {
         ],
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(5),
               topRight: Radius.circular(5),
             ),
-            child: Image.asset(imagePath),
+            child: Image.network(
+              photoUrl,
+              height: 100, // ← fixed height so text has room below
+              width: 74,
+              fit: BoxFit.cover,
+              errorBuilder: (_, __, ___) => Image.asset(
+                'assets/images/default_photo.png',
+                height: 100,
+                width: 74,
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-          SizedBox(height: 10),
-          Text(text, style: AppTextStyles.poppins500style14),
+          const SizedBox(height: 6),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Text(
+              _firstName,
+              style: AppTextStyles.poppins500style14,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+            ),
+          ),
         ],
       ),
     );

@@ -2,28 +2,29 @@ import 'package:dalel_app/app/core/app_assets.dart';
 import 'package:dalel_app/app/core/app_colors.dart';
 import 'package:dalel_app/app/core/app_text_styles.dart';
 import 'package:dalel_app/app/modules/home/controllers/home_controller.dart';
-import 'package:dalel_app/app/modules/home/model/historical_periods_model.dart';
+import 'package:dalel_app/app/modules/home/model/historical_characters_model.dart';
+import 'package:dalel_app/app/modules/home/views/widgets/expandable_description_text.dart';
 import 'package:dalel_app/app/modules/home/views/widgets/period_recommendations_section.dart';
 import 'package:dalel_app/app/modules/home/views/widgets/recommendation_item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:readmore/readmore.dart';
 import 'package:shimmer/shimmer.dart';
 
-class PeriodDetails extends StatelessWidget {
-  PeriodDetails({super.key});
+class CharacterDetails extends StatelessWidget {
+  CharacterDetails({super.key});
 
-  final PeriodModel period = Get.arguments;
-  String get displayPeriodName =>
-      period.name.replaceAll(RegExp(r'\s+'), ' ').trim();
+  final CharactersModel character = Get.arguments;
   final HomeController homeController = Get.isRegistered<HomeController>()
       ? Get.find<HomeController>()
       : Get.put(HomeController(), permanent: true);
 
+  String get displayCharacterName =>
+      character.name.replaceAll(RegExp(r'\s+'), ' ').trim();
+
   Widget _buildImageShimmer({
     required double width,
     required double height,
-    required BorderRadius borderRadius,
+    BorderRadius? borderRadius,
   }) {
     return Shimmer.fromColors(
       baseColor: Colors.grey[300]!,
@@ -36,6 +37,66 @@ class PeriodDetails extends StatelessWidget {
           borderRadius: borderRadius,
         ),
       ),
+    );
+  }
+
+  Widget _buildCharacterImageSection() {
+    return SizedBox(
+      width: 150,
+      height: 210,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          // Positioned(
+          //   top: 10,
+          //   child: Image.asset(
+          //     Assets.assetsImagesSaladinBackground,
+          //     width: 126,
+          //     fit: BoxFit.contain,
+          //   ),
+          // ),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Image.network(
+                character.insidePhoto,
+                fit: BoxFit.fitHeight,
+                width: 200,
+                height: 300,
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  }
+                  return _buildImageShimmer(width: 200, height: 300);
+                },
+                errorBuilder: (_, _, _) => Container(
+                  width: 132,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: AppColors.grey,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.broken_image_outlined),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDecorativeCircle({
+    required String asset,
+    required double top,
+    double? left,
+    double? right,
+  }) {
+    return Positioned(
+      top: top,
+      left: left,
+      right: right,
+      child: IgnorePointer(child: Image.asset(asset)),
     );
   }
 
@@ -67,7 +128,7 @@ class PeriodDetails extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'About $displayPeriodName',
+                      'About $displayCharacterName',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.poppins400style20,
@@ -77,76 +138,38 @@ class PeriodDetails extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: ReadMoreText(
-                            period.description,
-                            trimMode: TrimMode.Line,
-                            trimLines: 10,
-                            trimCollapsedText: ' ...Read more?',
-                            trimExpandedText: ' Show less',
-                            style: AppTextStyles.poppins300style16.copyWith(
+                          child: ExpandableDescriptionText(
+                            text: character.description,
+                            style: AppTextStyles.poppins500style14.copyWith(
                               height: 1.5,
-                            ),
-                            moreStyle: AppTextStyles.poppins400style12.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.lightGrey,
-                            ),
-                            lessStyle: AppTextStyles.poppins400style12.copyWith(
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.lightGrey,
                             ),
                           ),
                         ),
                         const SizedBox(width: 14),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            period.photo,
-                            width: 132,
-                            height: 180,
-                            fit: BoxFit.cover,
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) {
-                                return child;
-                              }
-                              return _buildImageShimmer(
-                                width: 132,
-                                height: 180,
-                                borderRadius: BorderRadius.circular(8),
-                              );
-                            },
-                            errorBuilder: (_, __, ___) => Container(
-                              width: 132,
-                              height: 180,
-                              color: AppColors.grey,
-                              child: const Icon(Icons.broken_image_outlined),
-                            ),
-                          ),
-                        ),
+                        _buildCharacterImageSection(),
                       ],
                     ),
                     const SizedBox(height: 20),
-                    if (period.examples.isNotEmpty) ...[
+                    if (character.wars.isNotEmpty) ...[
                       Text(
-                        '$displayPeriodName Wars',
+                        '$displayCharacterName Wars',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppTextStyles.poppins400style20,
                       ),
                       const SizedBox(height: 10),
                       Row(
-                        children: period.examples
+                        children: character.wars
                             .take(2)
                             .map(
-                              (example) => Expanded(
+                              (war) => Expanded(
                                 child: Padding(
                                   padding: const EdgeInsetsDirectional.only(
                                     end: 10,
                                   ),
                                   child: RecommendationItemCard(
-                                    title: example.name,
-                                    imageUrl: example.photo,
-                                    width: double.infinity,
-                                    height: 80,
+                                    title: war.name,
+                                    imageUrl: war.photo,
                                   ),
                                 ),
                               ),
@@ -168,33 +191,29 @@ class PeriodDetails extends StatelessWidget {
           ),
           Positioned(
             top: 100,
-            left: 230,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: 0.85,
-                child: Image.asset(Assets.assetsImagesVector1),
-              ),
+            left: 300,
+            child: Image.asset(
+              Assets.assetsImagesSaladinBackground2,
+              width: 100,
+              fit: BoxFit.contain,
             ),
           ),
-          Positioned(
-            top: 90,
-            left: 15,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: 0.85,
-                child: Image.asset(Assets.assetsImagesVector2),
-              ),
-            ),
+          _buildDecorativeCircle(asset: Assets.assetsImagesEllipse4, top: 130),
+          _buildDecorativeCircle(
+            asset: Assets.assetsImagesEllipse5,
+            top: 130,
+            left: 40,
           ),
-          Positioned(
+
+          _buildDecorativeCircle(
+            asset: Assets.assetsImagesEllipse6,
             top: 400,
-            right: 6,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: 0.85,
-                child: Image.asset(Assets.assetsImagesVector3),
-              ),
-            ),
+            left: 310,
+          ),
+          _buildDecorativeCircle(
+            asset: Assets.assetsImagesEllipse7,
+            top: 400,
+            left: 290,
           ),
         ],
       ),

@@ -1,8 +1,10 @@
 import 'package:dalel_app/app/core/app_strings.dart';
 import 'package:dalel_app/app/core/app_text_styles.dart';
+import 'package:dalel_app/app/routes/app_pages.dart';
 import 'package:dalel_app/app/modules/home/model/historical_characters_model.dart';
 import 'package:dalel_app/app/modules/home/views/widgets/historical_characters_item.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PeriodRecommendationsSection extends StatelessWidget {
   const PeriodRecommendationsSection({
@@ -44,6 +46,8 @@ class PeriodRecommendationsSection extends StatelessWidget {
               return HistoricalCharactersItem(
                 name: character.name,
                 photoUrl: character.photo,
+                onTap: () =>
+                    Get.toNamed(Routes.CharacterDetails, arguments: character),
               );
             },
           ),

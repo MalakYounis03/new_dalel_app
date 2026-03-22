@@ -16,6 +16,7 @@ abstract class Routes {
   static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
   static const HomeNavBarWidget = _Paths.HomeNavBarWidget;
   static const PeriodDetails = _Paths.PeriodDetails;
+  static const CharacterDetails = _Paths.CharacterDetails;
 }
 
 abstract class _Paths {
@@ -33,4 +34,5 @@ abstract class _Paths {
   static const FORGET_PASSWORD = '/forget-password';
   static const HomeNavBarWidget = '/home-nav-bar-widget';
   static const PeriodDetails = '/period-details';
+  static const CharacterDetails = '/character-details';
 }

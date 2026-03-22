@@ -1,6 +1,7 @@
 import 'package:dalel_app/app/core/app_colors.dart';
 import 'package:dalel_app/app/core/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 
 class RecommendationItemCard extends StatelessWidget {
   const RecommendationItemCard({
@@ -15,6 +16,21 @@ class RecommendationItemCard extends StatelessWidget {
   final String imageUrl;
   final double width;
   final double height;
+
+  Widget _buildImageShimmer() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: Container(
+        width: 47,
+        height: 64,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(6),
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +56,7 @@ class RecommendationItemCard extends StatelessWidget {
               title,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: AppTextStyles.poppins500style14.copyWith(
-                color: AppColors.black,
-              ),
+              style: AppTextStyles.poppins500style14,
             ),
           ),
           const SizedBox(width: 8),
@@ -50,12 +64,18 @@ class RecommendationItemCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(6),
             child: Image.network(
               imageUrl,
-              width: 46,
-              height: 46,
+              width: 47,
+              height: 64,
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) {
+                  return child;
+                }
+                return _buildImageShimmer();
+              },
               errorBuilder: (_, __, ___) => Container(
-                width: 46,
-                height: 46,
+                width: 47,
+                height: 64,
                 color: AppColors.grey,
                 child: const Icon(Icons.broken_image_outlined, size: 18),
               ),
